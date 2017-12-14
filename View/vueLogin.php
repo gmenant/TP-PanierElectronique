@@ -7,7 +7,7 @@
       Identifiant<input type="text">
       Mot de passe<input type="text">
       <button>Connexion</button><br/>
-      <button>Créer un compte</button>
+      <a href="index.php?page=CreerCompte"><input  type="button" value="Creer compte"></input></a>
 
     </form>
 
