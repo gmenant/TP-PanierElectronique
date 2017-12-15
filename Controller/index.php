@@ -1,51 +1,137 @@
 <?PHP
+include("../Model/modele.php");
 include("../View/entete.php");
 include("../View/menu.php");
-include("../Model/modele.php");
+connexion();
 
 ?>
 
 <div id="contener">
 
 <?PHP
-
+$page="";
 if (isset($_GET["page"]))
 {$page = ($_GET["page"]);}
 
+$id_utilisateur ="";
+if (isset($_POST["id"]))
+  {$id_utilisateur = ($_POST["id"]);}
+
+$motdepasse ="";
+if (isset($_POST["psw"]))
+  {$motdepasse = ($_POST["psw"]);}
+
 
 switch("$page"){
+    case 'identifier':
+                $id_utilisateur=$_POST['id'];
+                $motdepasse=$_POST['psw'];
+                identifieUtilisateur($id_utilisateur);
 
-case "Recherche":
-include '../View/vueRechercher.php';
-break;
+                if($infosUser and $infosUser['motdepasse'] == $motdepasse){
+                    $_SESSION['nomUtilisateur'] = $infosUser['nom'];
+                    $_SESSION['idUtilisateur']  = $id_utilisateur;
+                    $_SESSION['mdpUtilisateur'] = $motdepasse;
+                    $_SESSION['adresse_ligne1'] = $infosUser['adresse_ligne1'];
+                    $_SESSION['adresse_ligne2'] = $infosUser['adresse_ligne2'];
+                    $_SESSION['ville']          = $infosUser['ville'];
+                    $_SESSION['pays']           = $infosUser['pays'];
+                    $_SESSION['codepostal']     = $infosUser['codepostal'];
+                    $_SESSION['sexe']           = $infosUser['sexe'];
+                    $_SESSION['an_naissance']   = $infosUser['an_naissance'];
+                    $_SESSION['adresse_email']  = $infosUser['adresse_email'];
+                    $_SESSION['telephone']      = $infosUser['telephone'];
+                    $_SESSION['solde_compte']   = $infosUser['solde_compte'];
+                    $_SESSION['nbArticles']     = 0;
 
-case "Bibliotheque":
-include '../View/vueListeLivres.php';
-break;
+                    echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php?page=Recherche'>";
 
-case "Discotheque":
-include '../View/vueListeDisques.php';
-break;
+                }else{
+                    echo "<br/> Identifiant introuvable ...";
+                    include '../View/vueLogin.php';
+                }
 
-case "Quitter":
-include '../View/vueLogin.php';
-break;
+            break;
 
-case "CreerCompte":
-include '../View/vueEnregistrement.php';
-break;
+    case 'validerEnregistrement':
+      $nomNewUtilisateur     =  $_POST['nom'];
+      $idNewUtilisateur      =  $_POST['id'];
+      $mdp1NewUtilisateur    =  $_POST['psw1'];
+      $mdp2NewUtilisateur    =  $_POST['psw2'];
+      $adr1NewUtilisateur    =  $_POST['adr1'];
+      $adr2NewUtilisateur    =  $_POST['adr2'];
+      $villeNewUtilisateur   =  $_POST['ville'];
+      $cpNewUtilisateur      =  $_POST['cp'];
+      $paysNewUtilisateur    =  $_POST['pays'];
+      $sexeNewUtilisateur    =  $_POST['sexe'];
+      $dateNaisNewUtilisateur=  $_POST['dateN'];
+      $mailNewUtilisateur    =  $_POST['mail'];
+      $telNewUtilisateur     =  $_POST['tel'];
 
-default:
-include '../View/vueLogin.php';
+      if(isset($_POST['nom'])){
+
+          if($mdp1NewUtilisateur == $mdp2NewUtilisateur){
+
+              identifieUtilisateur($idNewUtilisateur);
+
+              if($infosUser){
+
+                  echo("L'id $idNewUtilisateur existe déjà. Ajout impossible.");
+
+                  }else{
+                      creatUser($nomNewUtilisateur,$idNewUtilisateur,$mdp1NewUtilisateur,$adr1NewUtilisateur,$adr2NewUtilisateur,$villeNewUtilisateur,$cpNewUtilisateur,$paysNewUtilisateur,$sexeNewUtilisateur,$dateNaisNewUtilisateur,$mailNewUtilisateur,$telNewUtilisateur);
+
+                          if($compteur){
+                          $_SESSION['nomUtilisateur'] =  $compteur['nom'];
+                          $_SESSION['idUtilisateur']  =  $compteur['id_utilisateur'];
+                          $_SESSION['mdpUtilisateur'] =  $compteur['motdepasse'];
+                          $_SESSION['adresse_ligne1'] =  $compteur['adresse_ligne1'];
+                          $_SESSION['adresse_ligne2'] =  $compteur['adresse_ligne2'];
+                          $_SESSION['ville']          =  $compteur['ville'];
+                          $_SESSION['pays']           =  $compteur['pays'];
+                          $_SESSION['codepostal']     =  $compteur['codepostal'];
+                          $_SESSION['sexe']           =  $compteur['sexe'];
+                          $_SESSION['an_naissance']   =  $compteur['an_naissance'];
+                          $_SESSION['adresse_email']  =  $compteur['adresse_email'];
+                          $_SESSION['telephone']      =  $compteur['telephone'];
+                          $_SESSION['solde_compte']  =  0;
+                          $_SESSION['nbArticles']    =  0;
+
+                          echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php?action=rechercher'>";
+                              }else{
+
+                                  echo ("Enregistrement impossible...");
+                                }
+                      }
+
+          }else{
+              echo ("<br/> mot de passe incorrect");
+          }
+      }else{
+          echo ("Veuillez renseigner un nom.");
+      }
+
+            break;
+    case "Recherche":
+       include '../View/vueRechercher.php';
+       break;
+    case "Bibliotheque":
+        include '../View/vueListeLivres.php';
+        break;
+    case "Discotheque":
+        include '../View/vueListeDisques.php';
+        break;
+    case 'quitter':
+       SupprimeSession();
+       echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php'>";
+       break;
+    case "CreerCompte":
+       include '../View/vueEnregistrement.php';
+       break;
+    default:
+       include '../View/vueLogin.php';
 };
 
-//include("../View/vueLogin.php");
-//include("../View/vueEnregistrement.php");
-//include("../View/vueResCherch.php");
-//include("../View/vueSolde.php");
-//include("../View/vuePanier.php");
-//include("../View/vueListeDisques.php");
-//include("../View/vueListeLivres.php");
 
 
 ?>
