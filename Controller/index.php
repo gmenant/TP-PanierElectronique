@@ -112,8 +112,25 @@ switch("$page"){
       }
 
             break;
+    case 'resCherch':
+        include '../View/vueResCherch.php';
+
+          break;
     case "Recherche":
-       include '../View/vueRechercher.php';
+        include '../View/vueRechercher.php';
+
+            $rechercher_dans = "";
+            $texte_cherche = "";
+
+        if (isset($_POST["rechercher_dans"]))
+        {
+          $rechercher_dans = ($_POST["rechercher_dans"]);
+          $texte_cherche   = ($_POST['texte_cherche']);
+        }
+
+
+       echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php?action=resCherch'>";
+
        break;
     case "Bibliotheque":
         include '../View/vueListeLivres.php';
