@@ -9,5 +9,8 @@
 <div id="tout">
 <header>
   <h1>Azamone</h1>
+  <?PHP
+
+  ?>
 </header>
 

@@ -1,5 +1,11 @@
 <?PHP
-echo $rechercher_dans;
-//echo $texte_cherche;
-//recherche($rechercher_dans,$texte_cherche );
+$filtre = "";
+$motsCles = "";
+
+if (isset($_POST["rechercher_dans"]))
+  {
+    $filtre = ($_POST["rechercher_dans"]);
+    $motsCles   = ($_POST["texte_cherche"]);
+  }
+recherche($motsCles,$filtre);
 ?>

@@ -2,6 +2,7 @@
 include("../Model/modele.php");
 include("../View/entete.php");
 include("../View/menu.php");
+session_start();
 connexion();
 
 ?>
@@ -24,34 +25,34 @@ if (isset($_POST["psw"]))
 
 switch("$page"){
     case 'identifier':
-                $id_utilisateur=$_POST['id'];
-                $motdepasse=$_POST['psw'];
-                identifieUtilisateur($id_utilisateur);
 
-                if($infosUser and $infosUser['motdepasse'] == $motdepasse){
-                    $_SESSION['nomUtilisateur'] = $infosUser['nom'];
-                    $_SESSION['idUtilisateur']  = $id_utilisateur;
-                    $_SESSION['mdpUtilisateur'] = $motdepasse;
-                    $_SESSION['adresse_ligne1'] = $infosUser['adresse_ligne1'];
-                    $_SESSION['adresse_ligne2'] = $infosUser['adresse_ligne2'];
-                    $_SESSION['ville']          = $infosUser['ville'];
-                    $_SESSION['pays']           = $infosUser['pays'];
-                    $_SESSION['codepostal']     = $infosUser['codepostal'];
-                    $_SESSION['sexe']           = $infosUser['sexe'];
-                    $_SESSION['an_naissance']   = $infosUser['an_naissance'];
-                    $_SESSION['adresse_email']  = $infosUser['adresse_email'];
-                    $_SESSION['telephone']      = $infosUser['telephone'];
-                    $_SESSION['solde_compte']   = $infosUser['solde_compte'];
-                    $_SESSION['nbArticles']     = 0;
+          $id_utilisateur=$_POST['id'];
+          $motdepasse=$_POST['psw'];
+          identifieUtilisateur($id_utilisateur);
+          if($infosUser and $infosUser['motdepasse'] == $motdepasse){
+              $_SESSION['nomUtilisateur'] = $infosUser['nom'];
+              $_SESSION['idUtilisateur']  = $id_utilisateur;
+              $_SESSION['mdpUtilisateur'] = $motdepasse;
+              $_SESSION['adresse_ligne1'] = $infosUser['adresse_ligne1'];
+              $_SESSION['adresse_ligne2'] = $infosUser['adresse_ligne2'];
+              $_SESSION['ville']          = $infosUser['ville'];
+              $_SESSION['pays']           = $infosUser['pays'];
+              $_SESSION['codepostal']     = $infosUser['codepostal'];
+              $_SESSION['sexe']           = $infosUser['sexe'];
+              $_SESSION['an_naissance']   = $infosUser['an_naissance'];
+              $_SESSION['adresse_email']  = $infosUser['adresse_email'];
+              $_SESSION['telephone']      = $infosUser['telephone'];
+              $_SESSION['solde_compte']   = $infosUser['solde_compte'];
+              $_SESSION['nbArticles']     = 0;
 
-                    echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php?page=Recherche'>";
+              echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php?page=Recherche'>";
 
-                }else{
-                    echo "<br/> Identifiant introuvable ...";
-                    include '../View/vueLogin.php';
-                }
+          }else{
+              echo "<br/> Identifiant introuvable ...";
+              include '../View/vueLogin.php';
+          }
 
-            break;
+      break;
 
     case 'validerEnregistrement':
       $nomNewUtilisateur     =  $_POST['nom'];
@@ -97,7 +98,8 @@ switch("$page"){
                           $_SESSION['solde_compte']  =  0;
                           $_SESSION['nbArticles']    =  0;
 
-                          echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php?action=rechercher'>";
+                          echo "L'utilisateur a bien été créé";
+                          echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php?page=Recherche'>";
                               }else{
 
                                   echo ("Enregistrement impossible...");
@@ -110,49 +112,42 @@ switch("$page"){
       }else{
           echo ("Veuillez renseigner un nom.");
       }
-
             break;
     case 'resCherch':
-        include '../View/vueResCherch.php';
-
-          break;
+        $dir = "include '../View/vueResCherch.php';";
+        verifConnexion($dir);
+                break;
     case "Recherche":
-        include '../View/vueRechercher.php';
-
-            $rechercher_dans = "";
-            $texte_cherche = "";
-
-        if (isset($_POST["rechercher_dans"]))
-        {
-          $rechercher_dans = ($_POST["rechercher_dans"]);
-          $texte_cherche   = ($_POST['texte_cherche']);
-        }
-
-
-       echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php?action=resCherch'>";
-
-       break;
+        $dir = "include '../View/vueRechercher.php';";
+        verifConnexion($dir);
+        break;
     case "Bibliotheque":
-        include '../View/vueListeLivres.php';
+        $dir = "include '../View/vueListeLivres.php';";
+        verifConnexion($dir);
         break;
     case "Discotheque":
-        include '../View/vueListeDisques.php';
+        $dir = "include '../View/vueListeDisques.php';";
+        verifConnexion($dir);
         break;
-    case 'quitter':
+    case 'Quitter':
        SupprimeSession();
        echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php'>";
        break;
     case "CreerCompte":
        include '../View/vueEnregistrement.php';
        break;
+    case "Login":
+       include '../View/vueLogin.php';
+       break;
+    case "Ajout":
+        //récupérer infos
+       include '../View/vueAjout.php';
+       break;
     default:
        include '../View/vueLogin.php';
 };
 
-
-
 ?>
-
 
 </div>
 <?PHP
