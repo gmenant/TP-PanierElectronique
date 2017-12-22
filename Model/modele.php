@@ -22,12 +22,13 @@ function connexion(){
     }
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
-function verifConnexion($direction){
+function verifConnexion(){
+
           if (!(isset($_SESSION['nomUtilisateur']))){
-         echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php?page=Login'>";
+         $page = '';
         }
-         else{eval($direction);}
-         }
+         // else{eval($direction);}
+        }
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -35,7 +36,7 @@ function ListeLivres(){
           global $idcom;
         $req=" SELECT no_article,titre, auteur, type_article, prix FROM boutique_livre ORDER BY titre ASC;";
         $res=$idcom->query($req);
-        echo '<table>';
+        echo '<table class="centrer tabProduit">';
         while($enreg=$res->fetch())
          { echo '<tr><td><form action="../controller/index.php?page=Ajout" method="post">
           <input type="hidden" name="id" value='.$enreg["no_article"].'>
@@ -48,7 +49,7 @@ function ListeMusiques(){
          global $idcom;
         $req=" SELECT no_article,titre, artiste, type_article, prix FROM boutique_musique ORDER BY titre ASC;";
         $res=$idcom->query($req);
-        echo '<table>';
+        echo '<table class="centrer tabProduit">';
         while($enreg=$res->fetch())
          { echo'<tr><td><form action="../controller/index.php?page=Ajout" method="post">
           <input type="hidden" name="id" value='.$enreg["no_article"].'>
@@ -98,7 +99,7 @@ function recherche($motsCles,$filtre)
   }
 
   $res=$idcom->query($req);
-  echo '<table>';
+  echo '<table class="centrer tabProduit">';
     while($enreg=$res->fetch()){
       if(isset($enreg['auteur'])){
 
@@ -142,11 +143,6 @@ function ArticleAAjouter($num,$type){
         global $idcom,$compteur;
       if ($type=='Livre'){
         $requaffiche=" SELECT no_article, titre, auteur, prix FROM boutique_livre WHERE no_article='$num' ";
-      }
-      else
-      {
-         $requaffiche=" SELECT no_article, titre, artiste, prix FROM boutique_musique WHERE no_article='$num' ";
-      }
         $res=$idcom->query($requaffiche);
 
       $enreg=$res->fetch();
@@ -161,4 +157,24 @@ function ArticleAAjouter($num,$type){
 
 
          return $compteur;
+      }
+      else
+      {
+         $requaffiche=" SELECT no_article, titre, artiste, prix FROM boutique_musique WHERE no_article='$num' ";
+         $res=$idcom->query($requaffiche);
+
+      $enreg=$res->fetch();
+
+          echo '<tr><td>
+          <form action="../controller/index.php?page=Ajout" method="post">
+          <input type="hidden" name="id" value='.$enreg["no_article"].'>
+          <input type="hidden" name="type" >
+          '.$enreg["titre"].' '.$enreg["artiste"].''.$enreg["prix"].'
+          </div>
+          </td><td><input type="submit" value="Valider"></form></td></tr>';
+
+
+         return $compteur;
+      }
+
         }

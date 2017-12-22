@@ -1,7 +1,7 @@
 <?PHP
 include("../Model/modele.php");
 include("../View/entete.php");
-include("../View/menu.php");
+
 session_start();
 connexion();
 
@@ -22,6 +22,7 @@ $motdepasse ="";
 if (isset($_POST["psw"]))
   {$motdepasse = ($_POST["psw"]);}
 
+verifConnexion();
 
 switch("$page"){
     case 'identifier':
@@ -114,20 +115,23 @@ switch("$page"){
       }
             break;
     case 'resCherch':
-        $dir = "include '../View/vueResCherch.php';";
-        verifConnexion($dir);
+        include("../View/menu.php");
+        include '../View/vueResCherch.php';
+
                 break;
     case "Recherche":
-        $dir = "include '../View/vueRechercher.php';";
-        verifConnexion($dir);
-        break;
+        include("../View/menu.php");
+        include '../View/vueRechercher.php';
+                break;
     case "Bibliotheque":
-        $dir = "include '../View/vueListeLivres.php';";
-        verifConnexion($dir);
+        include("../View/menu.php");
+        include '../View/vueListeLivres.php';
+
         break;
     case "Discotheque":
-        $dir = "include '../View/vueListeDisques.php';";
-        verifConnexion($dir);
+        include("../View/menu.php");
+        include '../View/vueListeDisques.php';
+
         break;
     case 'Quitter':
        SupprimeSession();
@@ -141,11 +145,13 @@ switch("$page"){
        break;
     case "Ajout":
         //récupérer infos
+    include("../View/menu.php");
        include '../View/vueAjout.php';
        break;
     default:
        include '../View/vueLogin.php';
 };
+
 
 ?>
 
