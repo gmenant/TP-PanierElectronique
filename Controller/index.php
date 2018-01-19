@@ -145,9 +145,22 @@ switch("$page"){
        break;
     case "Ajout":
         //récupérer infos
-    include("../View/menu.php");
+       include("../View/menu.php");
        include '../View/vueAjout.php';
        break;
+
+    case "AjouteArticle";
+      $no_article = $_POST['id'];
+      $type_article = $_POST['type'];
+       AjoutAuPanier($no_article,$type_article,ArticleAAjouter($no_article,$type_article));
+       echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php?page=Panier'>";
+       break;
+    case "Panier":
+        //récupérer infos
+       include("../View/menu.php");
+       include '../View/vuePanier.php';
+       break;
+
     default:
        include '../View/vueLogin.php';
 };

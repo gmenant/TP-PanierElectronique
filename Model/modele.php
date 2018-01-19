@@ -4,9 +4,7 @@ require("../model/commun.inc");
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 function SupprimeSession(){
-
         session_destroy();
-
     }
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
@@ -165,28 +163,70 @@ function ArticleAAjouter($num,$type){
 
           if ($type=='Livre'){
           echo '<tr><td>
-          <form action="../controller/index.php?page=Ajout" method="post">
+          <form action="../controller/index.php?page=AjouteArticle" method="post">
           <input type="hidden" name="id" value='.$ligne1["no_article"].'>
-          <input type="hidden" name="type" >
+           <input type="hidden" name="type" value='.$type.'>
           '.$ligne1["titre"].' '.$ligne1["auteur"].''.$ligne1["prix"].'
           </div>
           </td><td><input type="submit" value="Valider"></form></td></tr>';
 
           }else{
              echo '<tr><td>
-          <form action="../controller/index.php?page=Ajout" method="post">
+          <form action="../controller/index.php?page=AjouteArticle" method="post">
           <input type="hidden" name="id" value='.$ligne1["no_article"].'>
-          <input type="hidden" name="type" >
+           <input type="hidden" name="type" value='.$type.'>
           '.$ligne1["titre"].' '.$ligne1["artiste"].''.$ligne1["prix"].'
           </div>
           </td><td><input type="submit" value="Valider"></form></td></tr>';
           }
         }
 
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+        function AjoutAuPanier($num,$type,$ligne2){
+          connexion();
+          global $idcom,$ligne1;
+
+          $NBArt=$_SESSION['nbArticles']++;
+          if ($type=='Livre'){
+            $_SESSION['no_article'][$NBArt]  =  $ligne2['no_article'];
+            $_SESSION['type'][$NBArt]        =  $type;
+            $_SESSION['titre'][$NBArt]       =  $ligne2['titre'];
+            $_SESSION['auteur'][$NBArt]      =  $ligne2['auteur'];
+            $_SESSION['prix'][$NBArt]        =  $ligne2['prix'];
+          }else{
+            $_SESSION['no_article'][$NBArt]  =  $ligne2['no_article'];
+            $_SESSION['type'][$NBArt]        =  $type;
+            $_SESSION['titre'][$NBArt]       =  $ligne2['titre'];
+            $_SESSION['artiste'][$NBArt]     =  $ligne2['artiste'];
+            $_SESSION['prix'][$NBArt]        =  $ligne2['prix'];
+          }
+        }
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+        function AffichePanier(){
+          for ($i=0; $i <$_SESSION['nbArticles'] ; $i++) {
+            if($_SESSION['type'][$i]=='Livre'){
+            echo "<tr><td>".$_SESSION['titre'][$i]."</td>
+                  <td>".$_SESSION['auteur'][$i]."</td>
+                  <td>".$_SESSION['prix'][$i]."</td></tr>";
+            }else{
+
+            echo "<tr><td>".$_SESSION['titre'][$i]."</td>
+                  <td>".$_SESSION['artiste'][$i]."</td>
+                  <td>".$_SESSION['prix'][$i]."</td></tr>";
+                }
+          }
+        }
+
+/*
 echo "<br><h3>Cet article a été ajouté à votre panier. Vous pouvez modifier les quantités
-en affichant celui-ci.<h3>"
+en affichant celui-ci.<h3>";
 //SESSION on place ces variables dans des variables de session
-$nbr = $_SESSION[$nbr_articles$]; // juste pour simplifier l$écriture
+//$nbr=$_SESSION[$nbr_articles]; // juste pour simplifier l$écriture
 $_SESSION[$no_article$][$nbr] = $no_article;
 $_SESSION[$type_article$][$nbr]= $type_article;
 $_SESSION[$titre$][$nbr] =$titre;
@@ -195,4 +235,4 @@ $_SESSION[$prix$][$nbr]= $prix;
 $_SESSION[$quantite$][$nbr] = 1; // Quantité toujours fixée à 1 par défaut pour l’article
 sélectionné
 $_SESSION[$nbr_articles$]++; // incrémentation de la quantité d$articles.
-}
+}*/

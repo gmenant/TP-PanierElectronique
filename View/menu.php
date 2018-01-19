@@ -4,4 +4,5 @@
   <li><a href="index.php?page=Discotheque">Discothèque</a></li>
   <li><a href="../View/vueSolde.php">Compte</a></li>
   <li><a href="index.php?page=Quitter">Quitter</a></li>
+  <li><a href="index.php?page=Panier">Panier</a></li>
 </ul>
