@@ -1,6 +1,6 @@
 <?PHP
-include("../Model/modele.php");
-include("../View/entete.php");
+include("../model/modele.php");
+include("../view/entete.php");
 
 session_start();
 connexion();
@@ -50,7 +50,7 @@ switch("$page"){
 
           }else{
               echo "<br/> Identifiant introuvable ...";
-              include '../View/vueLogin.php';
+              include '../view/vueLogin.php';
           }
 
       break;
@@ -115,38 +115,46 @@ switch("$page"){
       }
             break;
     case 'resCherch':
-        include("../View/menu.php");
-        include '../View/vueResCherch.php';
+        include("../view/menu.php");
+        include '../view/vueResCherch.php';
 
                 break;
+
     case "Recherche":
-        include("../View/menu.php");
-        include '../View/vueRechercher.php';
+        include("../view/menu.php");
+        include '../view/vueRechercher.php';
                 break;
+
     case "Bibliotheque":
-        include("../View/menu.php");
-        include '../View/vueListeLivres.php';
+        include("../view/menu.php");
+        include '../view/vueListeLivres.php';
 
         break;
+
     case "Discotheque":
-        include("../View/menu.php");
-        include '../View/vueListeDisques.php';
-
+        include("../view/menu.php");
+        include '../view/vueListeDisques.php';
         break;
+
+    case "Compte":
+        include("../view/menu.php");
+        include '../view/vueCompte.php';
+        break;
+        
     case 'Quitter':
        SupprimeSession();
        echo "<meta http-equiv='refresh' content='1;URL=../controller/index.php'>";
        break;
     case "CreerCompte":
-       include '../View/vueEnregistrement.php';
+       include '../view/vueEnregistrement.php';
        break;
     case "Login":
-       include '../View/vueLogin.php';
+       include '../view/vueLogin.php';
        break;
     case "Ajout":
         //récupérer infos
-       include("../View/menu.php");
-       include '../View/vueAjout.php';
+       include("../view/menu.php");
+       include '../view/vueAjout.php';
        break;
 
     case "AjouteArticle";
@@ -157,12 +165,12 @@ switch("$page"){
        break;
     case "Panier":
         //récupérer infos
-       include("../View/menu.php");
-       include '../View/vuePanier.php';
+       include("../view/menu.php");
+       include '../view/vuePanier.php';
        break;
 
     default:
-       include '../View/vueLogin.php';
+       include '../view/vueLogin.php';
 };
 
 
@@ -170,5 +178,5 @@ switch("$page"){
 
 </div>
 <?PHP
-include("../View/pied.php");
+include("../view/pied.php");
 ?>
