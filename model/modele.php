@@ -69,7 +69,10 @@ function ListeMusiques(){
 function creatUser($nom,$id,$mdp,$adr1,$adr2,$ville,$cp,$pays,$sexe,$dateNais,$mail,$tel){
         connexion();
         global $idcom,$compteur;
-        $requeteEnregistre="INSERT INTO profil_utilisateur (nom,id_utilisateur,motdepasse,adresse_ligne1,adresse_ligne2,ville,pays,codepostal,sexe,an_naissance,adresse_email,telephone,solde_compte) VALUES ('$nom','$id','$mdp','$adr1','$adr2','$ville','$pays','$cp','$sexe','$dateNais','$mail','$tel','0')";
+
+        $hashed_password = password_hash($mdp, PASSWORD_DEFAULT);
+
+        $requeteEnregistre="INSERT INTO profil_utilisateur (nom,id_utilisateur,motdepasse,adresse_ligne1,adresse_ligne2,ville,pays,codepostal,sexe,an_naissance,adresse_email,telephone,solde_compte) VALUES ('$nom','$id','$hashed_password','$adr1','$adr2','$ville','$pays','$cp','$sexe','$dateNais','$mail','$tel','0')";
         $compteur=$idcom->exec($requeteEnregistre);
         return $compteur;
      }
@@ -208,18 +211,23 @@ function ArticleAAjouter($num,$type){
 /////////////////////////////////////////////////////////////////////////////////
 
         function AffichePanier(){
+          $total=0;
           for ($i=0; $i <$_SESSION['nbArticles'] ; $i++) {
             if($_SESSION['type'][$i]=='Livre'){
             echo "<tr><td>".$_SESSION['titre'][$i]."</td>
                   <td>".$_SESSION['auteur'][$i]."</td>
-                  <td>".$_SESSION['prix'][$i]."</td></tr>";
+                  <td>".$_SESSION['prix'][$i]."  €</td></tr>";
             }else{
 
             echo "<tr><td>".$_SESSION['titre'][$i]."</td>
                   <td>".$_SESSION['artiste'][$i]."</td>
-                  <td>".$_SESSION['prix'][$i]."</td></tr>";
+                  <td>".$_SESSION['prix'][$i]." €</td></tr>";
                 }
+            
+            $total = $total + $_SESSION['prix'][$i];
+            
           }
+          echo "<tr><td>&nbsp</td></tr><tr><td>Total</td><td></td><td> ".$total." €</td></tr>";
         }
 
 /*

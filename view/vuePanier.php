@@ -4,7 +4,7 @@
 ?>
 <div class="centrer">
 <h2>Panier</h2>
-<table>
+<table class="centrer tabProduit">
 <?PHP
 
 

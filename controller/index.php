@@ -29,6 +29,14 @@ switch("$page"){
 
           $id_utilisateur=$_POST['id'];
           $motdepasse=$_POST['psw'];
+
+           $reqmdp=" SELECT motdepasse FROM profil_utilisateur WHERE id_utilisateur='$id_utilisateur' ";
+           $res=$idcom->query($reqmdp);
+           $ligne1=$res->fetch();
+           $hashed_password = $ligne1[0];
+
+          $motdepasse = password_verify($motdepasse, $hashed_password);
+
           identifieUtilisateur($id_utilisateur);
           if($infosUser and $infosUser['motdepasse'] == $motdepasse){
               $_SESSION['nomUtilisateur'] = $infosUser['nom'];
